@@ -1,0 +1,82 @@
+﻿@page "/tools/appsettings"
+@using System.Text.Json
+<h2>App settings to ENV for .NET</h2>
+
+@if (!string.IsNullOrWhiteSpace(_error))
+{
+    <div class="text-error">@_error</div>
+}
+
+<div>
+    <fieldset>
+        <label for="prefix"></label>
+        <input name="prefix" type="text" placeholder="Prefix" @bind="_prefix"/>
+    </fieldset>
+    <fieldset>
+        <textarea @bind="_appSettingsJson" rows="15" class="text-big"></textarea>
+    </fieldset>
+    <fieldset>
+        <input type="button" @onclick="TryParse" value="Parse"/>
+    </fieldset>
+</div>
+
+<div class="text-data-result">
+    @foreach (var result in _result)
+    {
+        <div class="text-white"> @result </div>
+    }
+</div>
+
+@code {
+    private string _appSettingsJson;
+    private string _prefix;
+    private string _error;
+    private List<string> _result = new List<string>();
+
+    private void TryParse()
+    {
+        _error = string.Empty;
+        if (string.IsNullOrWhiteSpace(_appSettingsJson))
+            return;
+
+        try
+        {
+            var data = JsonDocument.Parse(_appSettingsJson);
+            Search(data.RootElement, _prefix ?? string.Empty);
+        }
+        catch (Exception e)
+        {
+            _error = $"Could not process JSON string, check if it's valid: {e.Message}";
+        }
+    }
+
+    private void Search(JsonElement element, string result)
+    {
+        var delimiter = result == _prefix || string.IsNullOrWhiteSpace(result)
+            ? string.Empty
+            : "__";
+        switch (element.ValueKind)
+        {
+            case JsonValueKind.Array:
+                var array = element.EnumerateArray().ToArray();
+                for (var i = 0; i < array.Length; i++)
+                    Search(array[i], $"{result}{delimiter}{i}");
+                break;
+            case JsonValueKind.Object:
+                foreach (var next in element.EnumerateObject())
+                    Search(next.Value, $"{result}{delimiter}{next.Name}");
+                break;
+            case JsonValueKind.Undefined:
+            case JsonValueKind.String:
+            case JsonValueKind.Number:
+            case JsonValueKind.True:
+            case JsonValueKind.False:
+            case JsonValueKind.Null:
+                _result.Add($"{result}={element}".TrimStart('_'));
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+}
