@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins&display=swap');
 
+$light-color:#F2F2F2;
+$contrast-one-color:#CB312F;
+$contrast-two-color:#FFCC51;
+$dark-color:#262626;
+$darker-color:#707070;
+
+$container-width: 930px;
 $breakpoint-small-screen: 1055px;
 
 html,
@@ -8,18 +15,58 @@ body {
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', 'Segoe UI', sans-serif;
-    background-color: #fefefe;
+    background-color: $light-color;
+    color: $dark-color;
 
     h1,
     h2,
     h3,
     h4 {
         font-family: 'Bebas Neue';
+        display: inline-block;
+        position: relative;
+        z-index: 1;
+        padding-left: 30px;
+
+        &::before {
+            content: ' ';
+            position: absolute;
+            background: $contrast-one-color;
+            height: 38px;
+            width: 100px;
+            z-index: -1;
+            left: 0px;
+        }
+    }
+
+    h2 {
+        &::before{
+            content: ' ';
+            position: absolute;
+            background: $contrast-one-color;
+            height: 30px;
+            width: 100px;
+            z-index: -1;
+            left: 0px;
+        }
+    }
+
+    h3 {
+        &::before{
+            content: ' ';
+            position: absolute;
+            background: $contrast-one-color;
+            height: 26px;
+            width: 100px;
+            z-index: -1;
+            left: 0px;
+        }
     }
 
     a {
-        color: #fefefe;
+        color: $darker-color;
         text-decoration: none;
+
 
         &:hover {
             text-decoration: none;
@@ -36,69 +83,37 @@ body {
     margin: 0;
 }
 
-.navigation {
-    top: 0px;
-    position: fixed;
-    width: 60px;
-    height: 100vh;
-    background-color: coral;
-    transition: 0.3s;
-    overflow: hidden;
-    padding: 0;
 
-    &:hover {
-        width: 300px;
-    }
+.navigation {
+    margin: auto;
+    width: $container-width;
+    height: 70px;
+    display: grid;     
+    grid-template-columns: auto auto;  
 
     ul {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        color: #fefefe;
         padding: 0;
         margin: 0;
+        display: flex;
+        justify-content: end;
+        align-items: center;
 
         li {
+            display: inline-block;
             position: relative;
             list-style: none;
-
-            margin: 0;
+            font-family: 'Bebas Neue';
+            font-size: 24px;
 
             a {
-                position: relative;
-                display: flex;
-                width: 100%;
-                text-decoration: none;
-                color: black;
+                color: $darker-color;
 
                 span.icon {
-                    position: relative;
-                    display: block;
-                    min-width: 60px;
-                    padding-left: 0.1em;
-                    height: 35px;
-                    text-align: center;
-                    color: #fefefe;
-                    font-size: 32px;
-                }
-
-                span.title {
-                    position: relative;
-                    display: block;
-                    line-height: 35px;
-                    text-align: start;
-                    white-space: nowrap;
-                    font-family: 'Bebas Neue';
-                    padding-top: 10px;
+                    display: none;
                 }
 
                 &:hover {
-                    background-color: #fefefe;
-
-                    span.icon {
-                        color: coral;
-                    }
+                    color: $contrast-one-color;
                 }
             }
         }
@@ -107,18 +122,98 @@ body {
 
 
 .main {
-    max-width: 900px;
-    min-height: 90vh;
-    margin: auto;
-    background-color: brown;
-    padding: .7em;
+    margin: 0 auto;
+    max-width: $container-width;
+    background-color: white;
+    border: 1px solid $dark-color;
+    padding: 1.7em;
+    box-sizing: border-box;
+}
 
+footer {
+    margin: 10px auto 0 auto;
+    width: $container-width;
+    justify-self: end;
 }
 
 @media (max-width: $breakpoint-small-screen) {
     .main {
         padding: 0 75px;
     }
+
+    .navigation {
+        z-index: 1000;
+        top: 0px;
+        display: block;
+        position: fixed;
+        width: 60px;
+        height: 100vh;
+        background-color: $contrast-one-color;
+        transition: 0.3s;
+        overflow: hidden;
+        padding: 0;
+
+        &:hover {
+            width: 300px;
+        }
+
+        ul {
+            display: block;
+            z-index: 10;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            color: $light-color;
+            padding: 0;
+            margin: 0;
+
+            li {
+                display: block;
+                position: relative;
+                list-style: none;
+                margin: 0;
+
+                a {
+                    position: relative;
+                    display: flex;
+                    width: 100%;
+                    text-decoration: none;
+                    color: $dark-color;
+
+                    span.icon {
+                        position: relative;
+                        display: block;
+                        min-width: 60px;
+                        height: 35px;
+                        text-align: center;
+                        color: $light-color;
+                        font-size: 32px;                        
+                        font-family: 'Poppins';
+                    }
+
+                    span.title {
+                        position: relative;
+                        display: block;
+                        line-height: 35px;
+                        text-align: start;
+                        white-space: nowrap;
+                        font-family: 'Bebas Neue';
+                        padding-top: 10px;
+                    }
+
+                    &:hover {
+                        background-color: $light-color;
+
+                        span.icon {
+                            color: $contrast-one-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 textarea.text-big {
@@ -128,14 +223,16 @@ textarea.text-big {
     overflow: auto;
 }
 
-input, textarea {
+
+input,
+textarea {
     font-family: inherit;
     padding: 3px 7px;
 }
 
 button,
 input[type=button] {
-    border: 2px solid black;
+    border: 2px solid$dark-color;
     padding: 5px 12px;
     font-family: inherit;
     transition: .2s;
@@ -151,7 +248,7 @@ input[type=button] {
 .text-error {
     background-color: #fefefe;
     color: coral;
-    padding: 5px 13px;    
+    padding: 5px 13px;
 }
 
 .text-simple {
