@@ -5,15 +5,32 @@ body {
   padding: 0;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  font-size: 14px;
   font-family: 'Poppins', 'Segoe UI', sans-serif;
   background-color: #F2F2F2;
   color: #262626;
 }
 
-html h1,
-html h2,
-html h3,
-html h4,
+body #app {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: auto 1fr auto;
+      grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+body footer {
+  position: relative;
+  padding: 30px;
+  width: 930px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background-color: #707070;
+  margin: auto;
+  margin-top: 30px;
+  color: #F2F2F2;
+}
+
 body h1,
 body h2,
 body h3,
@@ -25,10 +42,6 @@ body h4 {
   padding-left: 30px;
 }
 
-html h1::before,
-html h2::before,
-html h3::before,
-html h4::before,
 body h1::before,
 body h2::before,
 body h3::before,
@@ -36,24 +49,22 @@ body h4::before {
   content: ' ';
   position: absolute;
   background: #CB312F;
-  height: 38px;
+  height: 34px;
   width: 100px;
   z-index: -1;
   left: 0px;
 }
 
-html h2::before,
 body h2::before {
   content: ' ';
   position: absolute;
   background: #CB312F;
-  height: 30px;
+  height: 25px;
   width: 100px;
   z-index: -1;
   left: 0px;
 }
 
-html h3::before,
 body h3::before {
   content: ' ';
   position: absolute;
@@ -64,13 +75,12 @@ body h3::before {
   left: 0px;
 }
 
-html a,
 body a {
   color: #707070;
   text-decoration: none;
+  font-family: "Bebas Neue";
 }
 
-html a:hover,
 body a:hover {
   text-decoration: none;
 }
@@ -136,7 +146,7 @@ body a:hover {
 
 .main {
   margin: 0 auto;
-  max-width: 930px;
+  width: 930px;
   background-color: white;
   border: 1px solid #262626;
   padding: 1.7em;
@@ -144,15 +154,55 @@ body a:hover {
           box-sizing: border-box;
 }
 
-footer {
-  margin: 10px auto 0 auto;
-  width: 930px;
-  -ms-grid-column-align: end;
-      justify-self: end;
+.main ul {
+  padding: 0;
+  margin: 0;
 }
 
-@media (max-width: 1055px) {
+.main ul li {
+  display: block;
+  position: relative;
+  list-style: none;
+  font-family: 'Bebas Neue';
+  font-size: 1.3em;
+  z-index: 23;
+}
+
+.main ul li a {
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.main ul li a:hover {
+  color: #FFCC51;
+}
+
+.main ul li a::after {
+  content: '';
+  left: 0;
+  position: absolute;
+  height: 18px;
+  background: #CB312F;
+  width: 0px;
+  -webkit-transition: .3s;
+  transition: .3s;
+  z-index: -1;
+}
+
+.main ul li a:hover::after {
+  width: 65%;
+  z-index: -1;
+}
+
+@media only screen and (max-width: 930px) {
+  #app {
+    width: auto;
+  }
+  footer {
+    width: 100%;
+  }
   .main {
+    width: 100%;
     padding: 0 75px;
   }
   .navigation {
@@ -205,7 +255,7 @@ footer {
     text-align: center;
     color: #F2F2F2;
     font-size: 32px;
-    font-family: 'Poppins';
+    font-family: 'Poppins', serif;
   }
   .navigation ul li a span.title {
     position: relative;
@@ -224,23 +274,24 @@ footer {
   }
 }
 
-textarea.text-big {
-  width: 75%;
-  height: auto;
-  resize: none;
-  overflow: auto;
-}
-
 input,
 textarea {
   font-family: inherit;
   padding: 3px 7px;
+  font-size: 0.9em;
+}
+
+textarea {
+  min-width: 75%;
+  min-height: 150px;
+  resize: none;
+  overflow: auto;
 }
 
 button,
 input[type=button] {
   border: 2px solid #262626;
-  padding: 5px 12px;
+  padding: 7px 12px;
   font-family: inherit;
   -webkit-transition: .2s;
   transition: .2s;
@@ -250,9 +301,12 @@ button:hover,
 input[type=button]:hover {
   cursor: pointer;
   color: #fefefe;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(coral), to(red));
-  background-image: linear-gradient(to bottom, coral, red);
-  border-color: white;
+  background: #CB312F;
+}
+
+button:active,
+input[type=button]:active {
+  background: #FFCC51;
 }
 
 .text-error {
@@ -271,5 +325,8 @@ input[type=button]:hover {
 
 fieldset {
   border: 0;
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 0;
 }
 /*# sourceMappingURL=main.css.map */
