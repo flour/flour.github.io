@@ -23,7 +23,7 @@
 <div class="text-data-result">
     @foreach (var result in _result)
     {
-        <div class="text-white"> @result </div>
+        <div class="text-simple"> @result </div>
     }
 </div>
 
@@ -36,6 +36,7 @@
     private void TryParse()
     {
         _error = string.Empty;
+        _result.Clear();
         if (string.IsNullOrWhiteSpace(_appSettingsJson))
             return;
 
