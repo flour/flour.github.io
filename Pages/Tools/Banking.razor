@@ -1,0 +1,74 @@
+@page "/tools/banking"
+@using System.IO
+@using System.Text
+@using Ionic.Zlib
+
+<h2>Banking</h2>
+
+<EditForm Model="Data" OnValidSubmit="@MakeGood">
+    <label>Input (PaReq and others):</label>
+    <div>
+        <InputTextArea @bind-Value="Data.Input"/>
+    </div>
+    <div>
+        <b>URL decoded:</b>
+        @Data.Decoded
+    </div>
+    <div>
+        <b>base64 decode:</b>
+        @Data.Deflated
+    </div>
+    <div>
+        <b>Result:</b>
+        @Data.Output
+    </div>
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+
+    private class Model
+    {
+        public string Input { get; set; }
+        public string Decoded { get; set; }
+        public string Deflated { get; set; }
+        public string Output { get; set; }
+    }
+
+    private Model Data { get; set; } = new Model();
+
+    private async Task MakeGood()
+    {
+        if (string.IsNullOrWhiteSpace(Data.Input))
+            return;
+        
+        try
+        {
+            var decodedString = Convert.FromBase64String(Data.Input);
+            Data.Deflated = Encoding.UTF8.GetString(decodedString);
+
+            await using var ms = new MemoryStream(decodedString.ToArray());
+            await using var outMs = new MemoryStream();
+            await using var inflater = new ZlibStream(ms, CompressionMode.Decompress);
+            CopyStream(inflater, outMs);
+            Data.Output = Encoding.UTF8.GetString(outMs.ToArray());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            Data.Output = "failed";
+        }
+    }
+
+    private void CopyStream(Stream input, Stream output)
+    {
+        var buffer = new byte[4096];
+        int len;
+        while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
+        {
+            output.Write(buffer, 0, len);
+        }
+        output.Flush();
+    }
+
+}
